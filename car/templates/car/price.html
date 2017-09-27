@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <form action="./result" method="post">
+        {% csrf_token %}
+        <div>城市：<input name="city" type="text"></div>
+        <div>车型：<input name="model" type="text" size="60"></div>
+        <div>上牌时间：<input name="year" type="text">年<input name="month" type="text">月</div>
+        <div>行驶里程：<input name="xingshi" type="text">万公里</div>
+        <div><input type="submit" value="评估"></div>
+
+    </form>
+</head>
+<body>
+
+</body>
+</html>

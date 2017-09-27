@@ -1,0 +1,55 @@
+select * 
+from  dblink_connect('host=127.0.0.1 
+              dbname=car 
+              user=postgres 
+              password=123123');
+              
+select dblink_get_connections();    
+
+              
+
+insert into car_province (name)
+(SELECT *
+    FROM dblink('dbname=car', 'select name from car_province')
+      AS t1(name character(200)))
+
+select *
+from car_province
+
+insert into car_city (province_id,name)
+(SELECT *
+    FROM dblink('dbname=car', 'select province_id,name from car_city')
+      AS t1(province_id int,name character(200)))
+
+select *
+from car_city
+
+insert into car_brand (first,name)
+(SELECT *
+    FROM dblink('dbname=car', 'select first,name from car_brand')
+      AS t1(first character(200),name character(200)))
+      
+select *
+from car_brand
+
+insert into car_car (name,brand_id,type)
+(SELECT *
+    FROM dblink('dbname=car', 'select name,brand_id - 205 as brand_id,type from car_car order by brand_id')
+      AS t1(name character(200),brand_id int,type character(200)))
+      
+select *
+from car_car
+
+insert into car_model (name,car_id,price_new)
+(SELECT *
+    FROM dblink('dbname=car', 'select name,car_id - 1665 as car_id, price_new from car_model order by car_id')
+      AS t1(name character(200),car_id int,price_new numeric(5,2)))
+
+select name,car_id - 1665 as car_id, price_new
+from car_model
+order by car_id
+
+
+select *
+from car_model
+ 
