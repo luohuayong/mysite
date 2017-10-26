@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -13,14 +14,39 @@ import datetime
 
 def index(request):
     province_list = Province.objects.order_by('id')
+    brand_list = Brand.objects.order_by('first')
     # template = loader.get_template('polls/index.html')
     # context = RequestContext(request, {
     #     'latest_question_list': latest_question_list,
     # })
     # return HttpResponse(template.render(context))
 
-    context = {'province_list': province_list}
+    context = {'province_list': province_list,'brand_list': brand_list}
     return render(request, 'car/index.html', context)
+
+def city(request,id):
+    city_list = City.objects.filter(province=id)
+    list = []
+    for item in city_list:
+        list.append({'id':item.id,'name':item.name})
+    print(list)
+    return JsonResponse({'data':list})
+
+def car(request,id):
+    car_list = Car.objects.filter(brand=id)
+    list = []
+    for item in car_list:
+        list.append({'id':item.id,'name':item.name})
+    print(list)
+    return JsonResponse({'data':list})
+
+def model(request,id):
+    model_list = Model.objects.filter(car=id)
+    list = []
+    for item in model_list:
+        list.append({'id':item.id,'name':item.name})
+    print(list)
+    return JsonResponse({'data':list})
 
 def price(request):
     return render(request,'car/price.html')

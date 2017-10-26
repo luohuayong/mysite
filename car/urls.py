@@ -10,6 +10,9 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'city/(\d+)', views.city, name='city'),
+    url(r'car/(\d+)', views.car, name='car'),
+    url(r'model/(\d+)', views.model, name='model'),
     url(r'^price$', views.price, name='price'),
     url(r'^result$', views.result, name='result'),
 ]

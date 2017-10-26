@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -6,8 +6,80 @@
     <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+
+            $('#province').change(function () {
+                $.get('/car/city/'+$(this).val(),function (dic) {
+                    city = $('#city')
+                    city.empty().append('<option value="">城市</option>')
+                    $.each(dic.data,function (index,item) {
+                        city.append('<option value="'+item.id+'">'+item.name+'</option>')
+                    })
+                })
+            })
+
+            $('#brand').change(function () {
+                $.get('/car/car/'+$(this).val(),function (dic) {
+                    car = $('#car')
+                    car.empty().append('<option value="">车系</option>')
+                    $.each(dic.data,function (index,item) {
+                        city.append('<option value="'+item.id+'">'+item.name+'</option>')
+                    })
+                })
+            })
+
+            $('#car').change(function () {
+                $.get('/car/model/'+$(this).val(),function (dic) {
+                    model = $('#model')
+                    model.empty().append('<option value="">型号</option>')
+                    $.each(dic.data,function (index,item) {
+                        model.append('<option value="'+item.id+'">'+item.name+'</option>')
+                    })
+                })
+            })
+
+        });
+    </script>
 </head>
 <body>
+
+
+
+<form action="./result" method="post">
+    {% csrf_token %}
+    <div>
+        城市：
+        <select id="province">
+            <option value="">省份</option>
+            {% for province in province_list%}
+            <option value="{{ province.id }}">{{ province.name }}</option>
+            {% endfor %}
+        </select>
+        <select id="city">
+            <option value="">城市</option>
+        </select>
+    </div>
+    <div>
+        车型：
+        <select id="brand">
+            <option value="">品牌</option>
+            {% for brand in brand_list%}
+            <option value="{{ brand.id }}">{{ brand.name }}</option>
+            {% endfor %}
+        </select>
+        <select id="car">
+            <option value="">车系</option>
+        </select>
+        <select id="model">
+            <option value="">型号</option>
+        </select>
+    </div>
+    <div>上牌时间：<input name="year" type="text">年<input name="month" type="text">月</div>
+    <div>行驶里程：<input name="xingshi" type="text">万公里</div>
+    <div><input type="submit" value="评估"></div>
+
+</form>
 
 <div class="dropdown">
     <button type="button" class="btn dropdown-toggle" id="dropdownMenu1"
@@ -23,6 +95,8 @@
         {% endfor %}
     </ul>
 </div>
+
+
 
 </body>
 </html>
