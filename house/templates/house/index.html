@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>价格评估</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+
+            $('#province').change(function () {
+                $.get('/house/city/'+$(this).val(),function (dic) {
+                    city = $('#city')
+                    city.empty().append('<option value="">城市</option>')
+                    $.each(dic.data,function (index,item) {
+                        city.append('<option value="'+item.id+'">'+item.name+'</option>')
+                    })
+                })
+            })
+
+            $('#city').change(function () {
+                $.get('/house/qu/'+$(this).val(),function (dic) {
+                    qu = $('#qu')
+                    qu.empty().append('<option value="">区</option>')
+                    $.each(dic.data,function (index,item) {
+                        qu.append('<option value="'+item.id+'">'+item.name+'</option>')
+                    })
+                })
+            })
+
+            $('#qu').change(function () {
+                $.get('/house/pian/'+$(this).val(),function (dic) {
+                    pian = $('#pian')
+                    pian.empty().append('<option value="">片</option>')
+                    $.each(dic.data,function (index,item) {
+                        pian.append('<option value="'+item.id+'">'+item.name+'</option>')
+                    })
+                })
+            })
+
+            $('#pian').change(function () {
+                $.get('/house/xiaoqu/'+$(this).val(),function (dic) {
+                    xiaoqu = $('#xiaoqu')
+                    xiaoqu.empty().append('<option value="">小区</option>')
+                    $.each(dic.data,function (index,item) {
+                        xiaoqu.append('<option value="'+item.id+'">'+item.name+'</option>')
+                    })
+                })
+            })
+
+        });
+    </script>
+</head>
+<body>
+
+
+
+<form action="./result" method="post">
+    {% csrf_token %}
+    <div>
+        城市：
+        <select id="province" name="province">
+            <option value="">省份</option>
+            {% for province in province_list %}
+            <option value="{{ province.id }}">{{ province.name }}</option>
+            {% endfor %}
+        </select>
+        <select id="city" name="city">
+            <option value="">城市</option>
+        </select>
+        <select id="qu" name="qu">
+            <option value="">区</option>
+        </select>
+        <select id="pian" name="pian">
+            <option value="">片</option>
+        </select>
+        <select id="xiaoqu" name="xiaoqu">
+            <option value="">小区</option>
+        </select>
+    </div>
+    <div>
+        户型：
+        <select name="huxing">
+            <option value="">户型</option>
+            {% for item in huxing_list%}
+            <option value="{{ item.id }}">{{ item.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="chaoxiang">
+            <option value="">朝向</option>
+            {% for item in chaoxiang_list%}
+            <option value="{{ item.id }}">{{ item.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="louceng">
+            <option value="">楼层</option>
+            {% for item in louceng_list%}
+            <option value="{{ item.id }}">{{ item.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="chanquan">
+            <option value="">产权</option>
+            {% for item in chanquan_list%}
+            <option value="{{ item.id }}">{{ item.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="jianzhu">
+            <option value="">建筑类型</option>
+            {% for item in jianzhu_list%}
+            <option value="{{ item.id }}">{{ item.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>面积：<input name="mianji" type="text">平方米</div>
+    <div>年代：<input name="niandai" type="text">年</div>
+    <div><input type="submit" value="评估"></div>
+</form>
+
+
+</body>
+</html>

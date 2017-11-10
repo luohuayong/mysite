@@ -1,0 +1,162 @@
+update house_xiaoqu as hx set danjia = (select round(sum(danjia)/count(*)) from house_fangwu where xiaoqu_id = hx.id)
+
+select *
+from house_xiaoqu
+order by danjia
+
+update house_pian as hp set danjia = (select round(sum(danjia)/count(*)) from house_fangwu where pian_id = hp.id)
+
+select *
+from house_pian
+order by danjia
+
+update house_qu as hq set danjia = (select round(sum(danjia)/count(*)) from house_fangwu where qu_id = hq.id)
+
+select *
+from house_qu
+order by danjia
+
+update house_city as hc set danjia = (select round(sum(danjia)/count(*)) from house_fangwu where city_id = hc.id)
+
+select *
+from house_city
+order by danjia
+
+update house_chanquan as h set danjia = (select round(sum(danjia)/count(*)) from house_fangwu where chanquan_id = h.id)
+
+select *
+from house_chanquan
+order by danjia
+
+insert into house_city_chanquan (city_id,chanquan_id)
+select house_city.id as city_id,house_chanquan.id as chanquan_id 
+from house_city cross join house_chanquan
+
+select *
+from house_city_chanquan
+
+insert into house_city_chaoxiang (city_id,chaoxiang_id)
+select house_city.id,house_chaoxiang.id
+from house_city cross join house_chaoxiang
+
+select *
+from house_city_chaoxiang
+
+insert into house_city_huxing (city_id,huxing_id)
+select house_city.id,house_huxing.id
+from house_city cross join house_huxing
+
+select *
+from house_city_huxing
+
+select house_city.id as city_id,house_chanquan.id as chanquan_id from house_city cross join house_chanquan
+
+update house_huxing as h set danjia = (select round(sum(danjia)/count(*)) from house_fangwu where huxing_id = h.id)
+
+select *
+from house_huxing
+order by danjia
+
+update house_chaoxiang as h set danjia = (select round(sum(danjia)/count(*)) from house_fangwu where chaoxiang_id = h.id)
+
+select *
+from house_chaoxiang
+order by danjia
+
+update house_louceng as h set danjia = (select round(sum(danjia)/count(*)) from house_fangwu where louceng_id = h.id)
+
+select *
+from house_louceng
+order by danjia
+
+select sum(danjia)/count(*) from house_fangwu
+
+select count(*)
+from house_fangwu
+
+update house_fangwu as hf
+set qu_id = (select qu_id from house_pian where id=hf.pian_id)
+
+select zonglouceng,count(*)
+from house_fangwu
+group by zonglouceng
+order by zonglouceng
+
+select nianxian,count(*)
+from house_caiji
+group by nianxian
+
+update house_chanquan as hc set danjia = (select round(sum(danjia)/count(*)) from house_fangwu where qu_id = hq.id)
+
+select *
+from
+(select huxing,count(*) as ord
+from house_caiji
+group by huxing) as hc
+order by ord desc
+
+select *
+from house_huxing
+
+select count(*)
+from house_caiji
+where status='0'
+
+select count(*)
+from house_fangwu
+
+select *
+from house_caiji
+order by id desc
+limit 100
+
+select *
+from house_caiji
+where nianxian like '%50%'
+
+delete from house_caiji;
+delete from house_fangwu;
+delete from house_qu;
+delete from house_pian;
+delete from house_xiaoqu;
+delete from house_louceng;
+
+
+INSERT INTO house_chanquan (name) VALUES ('40年');
+INSERT INTO house_chanquan (name) VALUES ('50年');
+INSERT INTO house_chanquan (name) VALUES ('70年');
+INSERT INTO house_chaoxiang (name) VALUES ('东');
+INSERT INTO house_chaoxiang (name) VALUES ('南');
+INSERT INTO house_chaoxiang (name) VALUES ('西');
+INSERT INTO house_chaoxiang (name) VALUES ('北');
+INSERT INTO house_chaoxiang (name) VALUES ('东南');
+INSERT INTO house_chaoxiang (name) VALUES ('西南');
+INSERT INTO house_chaoxiang (name) VALUES ('西北');
+INSERT INTO house_chaoxiang (name) VALUES ('东北');
+INSERT INTO house_chaoxiang (name) VALUES ('南北');
+INSERT INTO house_chaoxiang (name) VALUES ('东西');
+INSERT INTO house_jianzhu (name) VALUES ('塔楼');
+INSERT INTO house_jianzhu (name) VALUES ('板楼');
+INSERT INTO house_jianzhu (name) VALUES ('板塔结合');
+INSERT INTO house_jianzhu (name) VALUES ('联排');
+INSERT INTO house_jianzhu (name) VALUES ('叠拼');
+INSERT INTO house_jianzhu (name) VALUES ('双拼');
+INSERT INTO house_jianzhu (name) VALUES ('独栋');
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('低层/多层','低层',0,8);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('中层/多层','中层',0,8);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('高层/多层','高层',0,8);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('低层/小高层','低层',8,18);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('中层/小高层','中层',8,18);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('高层/小高层','高层',8,18);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('低层/高层','低层',18,33);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('中层/高层','中层',18,33);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('高层/高层','高层',18,33);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('低层/超高层','低层',33,100);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('中层/超高层','中层',33,100);
+INSERT INTO house_louceng (name,lou,min,max) VALUES ('高层/超高层','高层',33,100);
+
+
+insert into house_fangwu (city_id,qu_id,pian_id,xiaoqu_id,huxing_id,mianji,danjia,chaoxiang_id,louceng_id,niandai,chanquan_id,guapai,gengxin,jianzhu_id,zhiwen) 
+values (360,34,94,2861,8,87.12,14348.0,2,20,2010,1,'2017-11-07','2017-11-08',2,'4f0d5e5830008ea7d4c1265cd879fb08');
+
+
